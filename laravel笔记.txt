@@ -1,0 +1,25 @@
+1.存session
+session(['user'=>$user]);
+2.获得单个值
+$email = DB::table('users')->where('name', 'John')->value('email');
+3.获取列值
+$titles = DB::table('roles')->lists('title');
+4.列值指定更多的自定义键
+$roles = DB::table('roles')->lists('title', 'name');
+5.select方法
+$users = DB::table('users')->select('name', 'email as user_email')->get();
+6.distinct方法允许你强制查询返回不重复的结果集：
+$users = DB::table('users')->distinct()->get();
+7.更新
+DB::table('users')
+            ->where('id', 1)
+            ->update(['votes' => 1]);
+8.删除
+DB::table('users')->where('votes', '<', 100)->delete();
+9.truncate
+DB::table('users')->truncate();
+10.悲观锁
+（1）共享锁（sharedLock）可以避免被选择的行被修改直到事务提交：
+	DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
+（2）lockForUpdate方法。“for update”锁避免选择行被其它共享锁修改或删除：
+	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
